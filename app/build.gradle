@@ -1,0 +1,46 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath "com.neenbedankt.gradle.plugins:android-apt:1.4"
+	}
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+apply plugin: 'com.android.application'
+apply plugin: "android-apt"
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.0"
+
+    defaultConfig {
+        applicationId "org.androidannotations.prefs.issue"
+        minSdkVersion 19
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+apt {
+	arguments {
+		resourcePackageName android.defaultConfig.applicationId
+		androidManifestFile variant.outputs[0].processResources.manifestFile
+		trace true
+	}
+}
+
+ext.androidAnnotationsVersion = "3.3-SNAPSHOT";
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+	apt "org.androidannotations:androidannotations:${androidAnnotationsVersion}"
+	compile "org.androidannotations:androidannotations-api:${androidAnnotationsVersion}"
+}
